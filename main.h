@@ -36,9 +36,4 @@ public:
    // put your code here
 };
 
-int main() {
-   // put your code here
-   return 0;
-}
-
 #endif // MAIN_H
