@@ -1,3 +1,8 @@
+# Strict Instructions on Uploading your solutions:
+* **You Must Follow the File structure Provided**
+*  Upload the Classes code in main.h
+*  Upload the main logic in main.hpp
+
 # Homework 5: Implementing the List Data Structure<br>
 
 *Due Date: Monday 9th of October, end of day*<br>
