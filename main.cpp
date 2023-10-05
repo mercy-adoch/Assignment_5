@@ -3,6 +3,6 @@
 #include<cmath>
 
 int main() {
-  // Put your code here
+  // put your code here
   return 0;
 }
