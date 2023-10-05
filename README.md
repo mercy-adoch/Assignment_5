@@ -1,4 +1,4 @@
-# Homework 5: Implementing the List Data Structure<br>
+# Homework 5: Implementing the List Data Structure<br>
 *Due Date: Monday 9th of October, end of day*<br>
 In this homework, you are tasked to design and implement a system for an online retail store. Given the description and requirements below, you have to decide the appropriate containers to use among std::vector, std::set, and std::map.<br>
 The retail store offers a variety of products. Each product has a unique product ID, a name, and a price. Customers can place orders, with each order containing one or more products. Each customer has a unique customer ID and a name.<br>
