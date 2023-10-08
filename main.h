@@ -1,39 +1,174 @@
-#ifndef MAIN_H
-#define MAIN_H
-#include<string>
-#include<map>
-#include<list>
-#include<set>
-#include<cmath>
-#include<iostream>
-#include<bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <list>
 
-class Product {
+class Product
+{
 private:
-   // put your code here
+    std::string _productID;
+    std::string _name;
+    float _price;
+
 public:
-   // put your code here
+    Product() = default;
+    Product(const std::string &productID, const std::string &name, float price)
+        : _productID(productID), _name(name), _price(price) {}
+
+    std::string getProductID() const
+    {
+        return _productID;
+    }
+
+    std::string getName() const
+    {
+        return _name;
+    }
+
+    float getPrice() const
+    {
+        return _price;
+    }
 };
 
-class Order {
+class Order
+{
 private:
-   // put your code here
+    std::vector<Product> _orderedProducts;
+
 public:
-   // put your code here
+    void addProduct(const Product &product)
+    {
+        _orderedProducts.push_back(product);
+    }
+
+    const std::vector<Product> &getOrderedProducts() const
+    {
+        return _orderedProducts;
+    }
 };
 
-class Customer {
+class Customer
+{
 private:
-   // put your code here
+    std::string _customerID;
+    std::string _customerName;
+    std::vector<Order> _orders;
+
 public:
-   // put your code here
+    Customer() = default;
+    Customer(const std::string &customerID, const std::string &customerName)
+        : _customerID(customerID), _customerName(customerName) {}
+
+    void placeOrder(const Order &order)
+    {
+        _orders.push_back(order);
+    }
+
+    std::string getCustomerID() const
+    {
+        return _customerID;
+    }
+
+    std::string getCustomerName() const
+    {
+        return _customerName;
+    }
+
+    const std::vector<Order> &getOrders() const
+    {
+        return _orders;
+    }
 };
 
-class RetailStore {
+class RetailStore
+{
 private:
-   // put your code here
-public:
-   // put your code here
-};
+    std::map<std::string, Product> _inventory;
+    std::map<std::string, Customer> _customers;
 
-#endif // MAIN_H
+public:
+    void addProductToInventory(const Product &product)
+    {
+        _inventory[product.getProductID()] = product;
+    }
+
+    void addCustomer(const Customer &customer)
+    {
+        _customers[customer.getCustomerID()] = customer;
+    }
+
+    void placeOrderForCustomer(const std::string &customerID, const Order &order)
+    {
+        if (_customers.find(customerID) != _customers.end())
+        {
+            _customers[customerID].placeOrder(order);
+        }
+    }
+
+    std::list<Product> getProductsOrderedByCustomer(const std::string &customerID) const
+    {
+        std::list<Product> productsOrdered;
+        if (_customers.find(customerID) != _customers.end())
+        {
+            const std::vector<Order> &orders = _customers.at(customerID).getOrders();
+            for (const Order &order : orders)
+            {
+                const std::vector<Product> &orderedProducts = order.getOrderedProducts();
+                productsOrdered.insert(productsOrdered.end(), orderedProducts.begin(), orderedProducts.end());
+            }
+        }
+        return productsOrdered;
+    }
+
+    float getTotalExpenditureOfCustomer(const std::string &customerID) const
+    {
+        float totalExpenditure = 0.0;
+        if (_customers.find(customerID) != _customers.end())
+        {
+            const std::vector<Order> &orders = _customers.at(customerID).getOrders();
+            for (const Order &order : orders)
+            {
+                const std::vector<Product> &orderedProducts = order.getOrderedProducts();
+                for (const Product &product : orderedProducts)
+                {
+                    totalExpenditure += product.getPrice();
+                }
+            }
+        }
+        return totalExpenditure;
+    }
+
+    std::list<std::string> getCustomersWhoPurchasedProduct(const std::string &productID) const
+    {
+        std::list<std::string> customersWhoPurchased;
+        for (const auto &customer : _customers)
+        {
+            const std::vector<Order> &orders = customer.second.getOrders();
+            for (const Order &order : orders)
+            {
+                const std::vector<Product> &orderedProducts = order.getOrderedProducts();
+                for (const Product &product : orderedProducts)
+                {
+                    if (product.getProductID() == productID)
+                    {
+                        customersWhoPurchased.push_back(customer.first);
+                        break;
+                    }
+                }
+            }
+        }
+        return customersWhoPurchased;
+    }
+
+    const std::map<std::string, Product> &getInventory() const
+    {
+        return _inventory;
+    }
+
+    const std::map<std::string, Customer> &getCustomers() const
+    {
+        return _customers;
+    }
+};
